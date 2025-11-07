@@ -30,7 +30,7 @@ namespace FizzBuzzApp.Tests
         [Test]
         public void Returns_FizzBuzz_When_Number_Divisible_By_3_And_5()
         {
-            var result = _fizzBuzzService.GetFizzBuzzSequence(5, 15).Single();
+            var result = _fizzBuzzService.GetFizzBuzzSequence(15, 15).Single();
             Assert.That(result, Is.EqualTo("FizzBuzz"));
         }
 
