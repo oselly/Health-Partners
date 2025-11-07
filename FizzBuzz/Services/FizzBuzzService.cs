@@ -6,6 +6,13 @@ namespace FizzBuzz.Services
 {
     public class FizzBuzzService : IFizzBuzzService
     {
+        /// <summary>
+        /// Checks to see if any rules match the current number in the range, if so returns the corresponding text, otherwise retruns the number as a string.
+        /// </summary>
+        /// <param name="rules"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
         public IEnumerable<string> GetFizzBuzzSequence(IEnumerable<IRule> rules, int start, int end)
         {
             for (int i = start; i <= end; i++)
