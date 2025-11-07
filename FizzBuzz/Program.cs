@@ -1,4 +1,7 @@
-﻿using FizzBuzz.Services;
+﻿using FizzBuzz.Models;
+using FizzBuzz.Models.Interfaces;
+using FizzBuzz.Services;
+using FizzBuzz.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -11,7 +14,10 @@ namespace FizzBuzzApp
             using var host = Host.CreateDefaultBuilder(args)
                 .ConfigureServices((context, services) =>
                 {
-                    services.AddScoped<FizzBuzzService>();
+                    services.AddScoped<IRule, FizzRule>();
+                    services.AddScoped<IRule, BuzzRule>();
+                    services.AddScoped<IRule, FizzBuzzRule>();
+                    services.AddScoped<IFizzBuzzService, FizzBuzzService>();
                     services.AddScoped<FizzBuzzApp>();
                 })
                 .Build();
@@ -22,11 +28,11 @@ namespace FizzBuzzApp
     }
 
 
-    public class FizzBuzzApp(FizzBuzzService fizzBuzzService)
+    public class FizzBuzzApp(IFizzBuzzService fizzBuzzService, IEnumerable<IRule> rules)
     {
         public void Run()
         {
-            var results = fizzBuzzService.GetFizzBuzzSequence(1, 100);
+            var results = fizzBuzzService.GetFizzBuzzSequence(rules, 1, 100);
             foreach (var result in results)
                 Console.WriteLine(result);
         }

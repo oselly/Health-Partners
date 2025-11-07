@@ -1,24 +1,28 @@
-﻿namespace FizzBuzz.Services
-{
-    public class FizzBuzzService
-    {
-        public IEnumerable<string> GetFizzBuzzSequence(int start, int end)
-        {
-            var results = new List<string>();
+﻿using FizzBuzz.Models.Interfaces;
+using FizzBuzz.Services.Interfaces;
+using System.Data;
 
+namespace FizzBuzz.Services
+{
+    public class FizzBuzzService : IFizzBuzzService
+    {
+        public IEnumerable<string> GetFizzBuzzSequence(IEnumerable<IRule> rules, int start, int end)
+        {
             for (int i = start; i <= end; i++)
             {
-                if (i % 15 == 0)
-                    results.Add("FizzBuzz");
-                else if (i % 3 == 0)
-                    results.Add("Fizz");
-                else if (i % 5 == 0)
-                    results.Add("Buzz");
-                else
-                    results.Add(i.ToString());
-            }
+                string? result = null;
 
-            return results;
+                foreach (var rule in rules)
+                {
+                    if (rule.IsMatch(i))
+                    {
+                        result = rule.TextToDisplay();
+                        break;
+                    }
+                }
+
+                yield return result ?? i.ToString();
+            }
         }
     }
 }
